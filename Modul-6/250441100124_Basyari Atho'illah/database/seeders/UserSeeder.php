@@ -20,10 +20,11 @@ class UserSeeder extends Seeder
             ['email' => 'admin@perpustakaan.test'],
             [
                 'name' => 'Administrator Utama',
-                'password' => Hash::make('password'),
+                'password' => Hash::make('adminhihu123'),
             ]
         );
         $admin->syncRoles(['admin']);
+        
 
         // 2. Akun Petugas
         $petugas = User::firstOrCreate(
