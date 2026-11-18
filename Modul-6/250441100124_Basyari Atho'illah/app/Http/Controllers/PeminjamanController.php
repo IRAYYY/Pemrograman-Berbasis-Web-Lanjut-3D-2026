@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Anggota;
+use Policies\PeminjamanPolicy;
 use App\Models\Buku;
 use App\Models\Peminjaman;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
 
 class PeminjamanController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Menampilkan seluruh data peminjaman buku (Khusus Admin dan Petugas).
      */
@@ -102,14 +106,25 @@ class PeminjamanController extends Controller
         $user = Auth::user();
 
         // Pemeriksaan Hak Akses Berdasarkan Identitas (Skenario 14) dan soal modul 6 a4
-        if ($user->hasRole('siswa') && $peminjaman->user_id !== $user->id) {
-            abort(403, 'Akses Ditolak: Anda tidak memiliki izin untuk melihat riwayat peminjaman milik pengguna lain.');
-        }
+        // if ($user->hasRole('siswa') && $peminjaman->user_id !== $user->id) {
+        //     abort(403, 'Akses Ditolak: Anda tidak memiliki izin untuk melihat riwayat peminjaman milik pengguna lain.');
+        // }
 
         $peminjaman->load(['user', 'buku', 'anggota']);
 
         return view('peminjaman.show', compact('peminjaman'));
     }
+
+    
+    // public function show(Peminjaman $peminjaman): View
+    // {
+    //     // Pemeriksaan hak akses menggunakan Laravel Policy
+    //     $this->authorize('view', $peminjaman);
+
+    //     $peminjaman->load(['user', 'buku', 'anggota']);
+
+    //     return view('peminjaman.show', compact('peminjaman'));
+    // }
 
     /**
      * Petugas/Admin menyetujui pengajuan peminjaman buku.
