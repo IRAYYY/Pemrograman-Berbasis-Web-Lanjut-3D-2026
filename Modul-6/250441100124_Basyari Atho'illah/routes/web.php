@@ -33,11 +33,13 @@ require __DIR__.'/auth.php';
 // =========================================================================
 // 2. ROUTE TERPROTEKSI AUTENTIKASI (Middleware: auth)
 // Skenario 1 & 15: Pengguna yang belum login / setelah logout akan dialihkan ke login
+// untuk keamanan soal 3, kita tambahkan pada 'auth' can:kelola-buku agar siswa tidak bisa mengakses halaman kelola buku
 // =========================================================================
-Route::middleware(['auth', 'can:kelola-buku'])->group(function () {
+Route::middleware(['auth'])->group(function () {
 
     // Demonstrasi CSRF - sengaja dibuat tidak aman
 // Route::get('/buku/{buku}/hapus', [ApiBukuController::class, 'destroy'])
+//     ->middleware('role:admin|petugas')
 //     ->name('buku.hapus.tidak-aman');
 
     // yang ini aman
