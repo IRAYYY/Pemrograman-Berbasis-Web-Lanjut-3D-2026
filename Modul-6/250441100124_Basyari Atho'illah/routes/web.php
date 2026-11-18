@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     // yang ini aman
     Route::delete('/buku/{buku}', [ApiBukuController::class, 'destroy'])
+    ->middleware('can:kelola-buku')
     ->name('buku.destroy');
 
     // Demonstrasi SQL Injection - hanya untuk pengujian lokal

@@ -40,7 +40,8 @@
             {{-- ========================================================
                  MAIN CRUD SECTION (FORM & TABLE)
                  ======================================================== --}}
-            @hasanyrole('admin|petugas')
+            
+            @can('kelola-buku')
             <div class="crud-grid">
 
                 {{-- ====================================================
@@ -238,12 +239,12 @@
                     </div>
                 </div>
 
-            @hasanyrole('admin|petugas')
+            @can('kelola-buku')
             </div>
             @else
             </div>
             </div>
-            @endhasanyrole
+            @endcan
 
 
 
@@ -323,7 +324,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // -------------------------------------------------------------------------
     const API_BUKU_URL = '/api/buku';
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
-    const CAN_MANAGE = @json(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('petugas')));
+    // const CAN_MANAGE = @json(auth()->check() && (auth()->user()->hasRole('admin') || auth()->user()->hasRole('petugas')));
+    // const CAN_BORROW = @json(auth()->check() && auth()->user()->hasRole('siswa'));
+    @can('kelola-buku')
+        const CAN_MANAGE = true;
+    @else
+        const CAN_MANAGE = false;
+    @endcan
+
     const CAN_BORROW = @json(auth()->check() && auth()->user()->hasRole('siswa'));
 
     let daftarBuku = [];           // Cache lokal data buku dari API
@@ -588,7 +596,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         </span>
                     </td>
                     <td>
-                        <div style="font-weight: 600; color: #0f172a;">${judulBuku}</div>
+                        
+                        <div style="font-weight: 600; color: #0f172a;">${escapeHtml(judulBuku)}</div>
                         <div style="font-size: 0.75rem; color: #94a3b8;">ID: #${bukuId}</div>
                     </td>
                     <td style="color: #334155;">

@@ -102,9 +102,9 @@ class PeminjamanController extends Controller
         $user = Auth::user();
 
         // Pemeriksaan Hak Akses Berdasarkan Identitas (Skenario 14) dan soal modul 6 a4
-        // if ($user->hasRole('siswa') && $peminjaman->user_id !== $user->id) {
-        //     abort(403, 'Akses Ditolak: Anda tidak memiliki izin untuk melihat riwayat peminjaman milik pengguna lain.');
-        // }
+        if ($user->hasRole('siswa') && $peminjaman->user_id !== $user->id) {
+            abort(403, 'Akses Ditolak: Anda tidak memiliki izin untuk melihat riwayat peminjaman milik pengguna lain.');
+        }
 
         $peminjaman->load(['user', 'buku', 'anggota']);
 

@@ -29,7 +29,7 @@ Route::get('/buku/{id}', [BukuController::class, 'show'])
     ->name('api.buku.show');
 
 // API Buku - endpoint perubahan hanya untuk pengguna berizin
-Route::middleware(['web', 'auth', 'permission:kelola data buku', 'can:kelola-buku'])
+Route::middleware(['web', 'auth', 'can:kelola-buku'])
     ->group(function () {
 
         Route::post('/buku', [BukuController::class, 'store'])
